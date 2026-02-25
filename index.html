@@ -1,132 +1,1293 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mohamed Yonis Yusuf - Portfolio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mohamed Yonis Yusuf | Full‑Stack Developer Portfolio</title>
+
+  <!-- SEO -->
+  <meta name="description"
+    content="Portfolio of Mohamed Yonis Yusuf, a full‑stack developer building modern, performant web applications." />
+  <meta name="author" content="Mohamed Yonis Yusuf" />
+  <meta property="og:title" content="Mohamed Yonis Yusuf | Full‑Stack Developer" />
+  <meta property="og:description"
+    content="Explore projects, skills, and GitHub activity of full‑stack developer Mohamed Yonis Yusuf." />
+  <meta property="og:type" content="website" />
+
+  <!-- TailwindCSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+
+  <!-- Custom styles -->
   <style>
-    .box{
-      cursor: pointer;
-      
+    :root {
+      --bg: #020617;
+      --bg-alt: #020617;
+      --bg-elevated: #020617;
+      --card: #020617;
+      --border-subtle: rgba(148, 163, 184, 0.25);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #6366f1;
+      --accent-soft: rgba(99, 102, 241, 0.15);
+      --accent-strong: #4f46e5;
+      --danger: #ef4444;
+    }
+
+    body.theme-light {
+      --bg: #f9fafb;
+      --bg-alt: #ffffff;
+      --bg-elevated: #f3f4f6;
+      --card: #ffffff;
+      --border-subtle: rgba(148, 163, 184, 0.35);
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #4f46e5;
+      --accent-soft: rgba(79, 70, 229, 0.08);
+      --accent-strong: #4f46e5;
+      --danger: #b91c1c;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .card-surface {
+      background: radial-gradient(circle at top left, rgba(96, 165, 250, 0.08), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.1), transparent 60%),
+        var(--card);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.5);
+    }
+
+    .card-surface-light {
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    }
+
+    .tag-pill {
+      border-radius: 9999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    body.theme-light .tag-pill {
+      background: rgba(249, 250, 251, 0.9);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #f9fafb;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .btn-ghost {
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background-color: rgba(15, 23, 42, 0.7);
+      color: var(--text);
+    }
+
+    body.theme-light .btn-ghost {
+      background-color: rgba(255, 255, 255, 0.92);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #38bdf8, #6366f1, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .section-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .section-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .scroll-progress {
+      background-image: linear-gradient(to right, #38bdf8, #6366f1, #a855f7);
+    }
+
+    .project-skeleton {
+      background: linear-gradient(90deg, rgba(148, 163, 184, 0.1), rgba(148, 163, 184, 0.25), rgba(148, 163, 184, 0.1));
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
     }
   </style>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- EmailJS (for contact form – configure your keys below in JS) -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
-<body class="font-sans antialiased">
+
+<body class="antialiased min-h-screen theme-dark">
+
+  <!-- Scroll progress bar -->
+  <div id="scroll-progress" class="fixed top-0 left-0 h-1 scroll-progress z-40" style="width: 0;"></div>
 
   <!-- Navbar -->
-  <nav class="bg-blue-600 p-4 text-white">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="text-xl font-bold">Mohamed Yonis Yusuf</div>
-      <div class="hidden md:flex">
-        <a href="#home" class="px-3">Home</a>
-        <a href="#about" class="px-3">About Me</a>
-        <a href="#projects" class="px-3">Projects</a>
-        <a href="#contact" class="px-3">Contact</a>
-      </div>
-      <div class="md:hidden">
-        <button id="menu-button" class="focus:outline-none">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-          </svg>
-        </button>
+  <nav class="fixed top-0 inset-x-0 z-30 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <a href="#home" class="flex items-center gap-2 group">
+          <div
+            class="h-9 w-9 rounded-full bg-gradient-to-tr from-sky-500 via-indigo-500 to-fuchsia-500 flex items-center justify-center text-xs font-semibold text-white shadow-lg">
+            MY
+          </div>
+          <div class="flex flex-col leading-tight">
+            <span class="text-sm font-semibold tracking-tight">Mohamed Yonis Yusuf</span>
+            <span class="text-[11px] text-slate-400">Full‑Stack Developer</span>
+          </div>
+        </a>
+
+        <div class="hidden md:flex items-center space-x-6 text-sm">
+          <a href="#home" class="text-slate-300 hover:text-white transition-colors">Home</a>
+          <a href="#about" class="text-slate-300 hover:text-white transition-colors">About</a>
+          <a href="#skills" class="text-slate-300 hover:text-white transition-colors">Skills</a>
+          <a href="#projects" class="text-slate-300 hover:text-white transition-colors">Projects</a>
+          <a href="#contact" class="text-slate-300 hover:text-white transition-colors">Contact</a>
+          <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 text-sky-400 hover:text-sky-300">
+            <span>GitHub</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"
+              aria-hidden="true">
+              <path fill-rule="evenodd"
+                d="M5 4a1 1 0 011-1h9a1 1 0 011 1v9a1 1 0 11-2 0V6.414l-9.293 9.293a1 1 0 01-1.414-1.414L12.586 5H6a1 1 0 01-1-1z"
+                clip-rule="evenodd" />
+            </svg>
+          </a>
+          <button id="theme-toggle" type="button"
+            class="ml-4 inline-flex items-center justify-center h-8 w-8 rounded-full btn-ghost focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-950"
+            aria-label="Toggle dark and light theme">
+            <span id="theme-icon" aria-hidden="true">🌙</span>
+          </button>
+        </div>
+
+        <!-- Mobile actions -->
+        <div class="flex items-center md:hidden gap-2">
+          <button id="theme-toggle-mobile" type="button"
+            class="inline-flex items-center justify-center h-9 w-9 rounded-full btn-ghost focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            aria-label="Toggle dark and light theme (mobile)">
+            <span id="theme-icon-mobile" aria-hidden="true">🌙</span>
+          </button>
+          <button id="menu-button" type="button"
+            class="inline-flex items-center justify-center rounded-md p-2 text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            aria-label="Open main menu" aria-expanded="false" aria-controls="mobile-menu">
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden">
-      <a href="#home" class="block px-3 py-2">Home</a>
-      <a href="#about" class="block px-3 py-2">About Me</a>
-      <a href="#projects" class="block px-3 py-2">Projects</a>
-      <a href="#contact" class="block px-3 py-2">Contact</a>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden border-t border-slate-800 bg-slate-950/95">
+      <div class="px-4 pt-2 pb-4 space-y-1 text-sm">
+        <a href="#home" class="block py-2 text-slate-200 hover:text-white">Home</a>
+        <a href="#about" class="block py-2 text-slate-200 hover:text-white">About</a>
+        <a href="#skills" class="block py-2 text-slate-200 hover:text-white">Skills</a>
+        <a href="#projects" class="block py-2 text-slate-200 hover:text-white">Projects</a>
+        <a href="#contact" class="block py-2 text-slate-200 hover:text-white">Contact</a>
+        <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+          class="block py-2 text-sky-400 hover:text-sky-300">GitHub</a>
+      </div>
     </div>
   </nav>
 
-  <!-- Home Section -->
-  <section id="home" class="bg-gray-100 py-20">
-    <div class="container mx-auto text-center px-4">
-      <h1 class="text-4xl font-bold mb-4">Welcome to My Portfolio</h1>
-      <p class="text-lg mb-6">I am Mohamed Yonis Yusuf, a full stack developer passionate about creating innovative solutions.</p>
-      <a href="#projects" class="bg-blue-600 text-white py-2 px-4 rounded">View My Projects</a>
-    </div>
-  </section>
+  <main class="pt-20">
+    <!-- Home / Hero -->
+    <section id="home" class="relative overflow-hidden">
+      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div class="absolute -top-40 right-10 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl"></div>
+        <div class="absolute bottom-0 -left-10 h-52 w-52 rounded-full bg-sky-500/20 blur-3xl"></div>
+      </div>
 
-  <!-- About Me Section -->
-  <section id="about" class="py-20">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-6 text-center">About Me</h2>
-      <div class="flex flex-col md:flex-row items-center">
-        <div class="md:w-1/2 p-4">
-          <img src="profile.jpg" alt="Mohamed Yonis Yusuf" class="rounded-full w-52 mx-auto mb-4 md:mb-0">
-        </div>
-        <div class="md:w-1/2 p-4 text-center md:text-left">
-          <p class="text-lg">I'm a full stack developer with a background in Computer Science & IT. I specialize in creating dynamic and responsive web applications. My interests include web development, mobile applications, and exploring new technologies.</p>
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 section-reveal">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <p
+              class="inline-flex items-center gap-2 rounded-full bg-slate-900/60 border border-slate-700/60 px-3 py-1 text-xs text-slate-300 mb-4">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              Available for full‑stack opportunities
+            </p>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+              <span class="block text-slate-100">Building modern,</span>
+              <span class="block gradient-text">high‑impact web experiences.</span>
+            </h1>
+            <p class="text-sm sm:text-base text-slate-400 max-w-xl mb-6">
+              I’m a full‑stack developer with a strong foundation in Computer Science &amp; IT,
+              crafting responsive, performant applications from front‑end interfaces to back‑end APIs.
+            </p>
+            <div class="flex flex-wrap items-center gap-3 mb-6">
+              <a href="#projects"
+                class="btn-primary inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium shadow-lg shadow-indigo-500/25">
+                <span>View Projects</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"
+                  aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M10.293 3.293a1 1 0 011.414 0L17 8.586a1 1 0 010 1.414l-5.293 5.293a1 1 0 01-1.414-1.414L13.586 11H4a1 1 0 110-2h9.586L10.293 4.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd" />
+                </svg>
+              </a>
+              <a href="#contact"
+                class="btn-ghost inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium">
+                <span>Let’s collaborate</span>
+              </a>
+            </div>
+            <div class="flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
+              <span class="inline-flex items-center gap-1">
+                <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
+                Full‑stack web applications
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <span class="h-1.5 w-1.5 rounded-full bg-fuchsia-400"></span>
+                Clean UI &amp; performance‑focused
+              </span>
+            </div>
+          </div>
+
+          <div class="relative section-reveal">
+            <div class="relative mx-auto w-64 sm:w-72">
+              <div
+                class="absolute -inset-1 rounded-3xl bg-gradient-to-tr from-sky-500 via-indigo-500 to-fuchsia-500 opacity-60 blur-xl">
+              </div>
+              <div
+                class="relative card-surface card-surface-light rounded-3xl px-6 py-6 flex flex-col items-center text-center">
+                <img src="profile.jpg" alt="Portrait of Mohamed Yonis Yusuf" loading="lazy"
+                  class="h-28 w-28 rounded-2xl object-cover mb-4 border border-slate-700/70" />
+                <h2 class="text-lg font-semibold mb-1">Mohamed Yonis Yusuf</h2>
+                <p class="text-xs text-slate-400 mb-3">Full‑Stack Developer</p>
+                <p class="text-xs text-slate-400 mb-4">
+                  Focused on building end‑to‑end solutions from intuitive interfaces to scalable backends.
+                </p>
+                <div class="flex flex-wrap justify-center gap-2 text-[11px]">
+                  <span class="tag-pill px-2 py-1 text-sky-300">JavaScript</span>
+                  <span class="tag-pill px-2 py-1 text-indigo-300">React</span>
+                  <span class="tag-pill px-2 py-1 text-emerald-300">Node.js</span>
+                  <span class="tag-pill px-2 py-1 text-fuchsia-300">MongoDB</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Projects Section -->
-  <section id="projects" class="bg-gray-100 py-20">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-6 text-center">Projects</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white box p-4 rounded shadow">
-          <img src="sombright.PNG" alt="Project 1" class="w-full h-48 object-cover mb-4 rounded">
-          <h3 class="text-xl font-bold mb-2 ml-3">Sombright</h3>
-          <p class="mb-4">"I developed the Sombright website, a comprehensive platform offering services in research, training, and consultancy. The site is designed to provide users with valuable resources and professional guidance, while also featuring an e-commerce functionality for selling courses. My role in this project involved creating a user-friendly interface, ensuring seamless navigation, and integrating tools for course distribution, making it a versatile and efficient platform for both service providers and learners."</p>
-          <a href="https://sombright.so/index.php" class="text-blue-600">Visit Now</a>
+    <!-- About -->
+    <section id="about" class="py-16 sm:py-20 section-reveal">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="h-6 w-1 rounded-full bg-gradient-to-b from-sky-500 to-indigo-500"></div>
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-sky-400">About</p>
+            <h2 class="text-xl sm:text-2xl font-semibold tracking-tight">Who I am as a developer</h2>
+          </div>
         </div>
-        <div class="bg-white p-4 box rounded shadow">
-          <img src="school.jpeg" alt="Project 2" class="w-full h-48 object-cover mb-4 rounded">
-          <h3 class="text-xl font-bold mb-2 ml-3">School Management </h3>
-          <p class="mb-4">"Developed a school management system that streamlines administrative tasks, enhances communication, and improves overall efficiency. The system includes features like student enrollment, attendance tracking, grade management, and parent-teacher interaction, providing a centralized platform for seamless operations. The focus is on a user-friendly interface that allows schools to manage their resources effectively while ensuring data security and accessibility for staff, students, and parents."</p>
-          <a href="#" class="text-blue-600">Visit Now</a>
-        </div>
-        <div class="bg-white p-4 box rounded shadow">
-          <img src="blood.jpeg" alt="Project 3" class="w-full h-48 object-cover mb-4 rounded">
-          <h3 class="text-xl font-bold mb-2 ml-3">Blood Donation</h3>
-          <p class="mb-4">"Designed and developed a blood donation system aimed at connecting donors with those in need of blood in an efficient and organized manner. The platform facilitates the registration of donors, tracks available blood types, and enables quick matching with recipients. It also features real-time notifications, donation history, and secure data handling to ensure both donors and recipients have a seamless and safe experience. The system is built to simplify the donation process and improve accessibility to life-saving resources."</p>
-          <a href="#" class="text-blue-600">Visit Now</a>
+        <div class="card-surface card-surface-light rounded-3xl px-6 sm:px-8 py-6 sm:py-8">
+          <p class="text-sm sm:text-base text-slate-300 leading-relaxed mb-4">
+            I am a full‑stack developer with a background in Computer Science &amp; IT, experienced in building
+            responsive and accessible web applications. I enjoy translating complex ideas into clean, maintainable
+            code and intuitive interfaces.
+          </p>
+          <p class="text-sm sm:text-base text-slate-300 leading-relaxed mb-4">
+            My work spans front‑end development (React, modern JavaScript, Tailwind CSS) and back‑end development
+            (Node.js, Express, databases). I care deeply about performance, developer experience, and crafting
+            experiences that feel fast, polished, and reliable.
+          </p>
+          <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
+            Outside of shipping features, I enjoy exploring new technologies, improving existing systems,
+            and collaborating with teams to bring real business value through software.
+          </p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="py-20">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-6 text-center">Contact Me</h2>
-      <form class="max-w-lg mx-auto">
-        <div class="mb-4">
-          <label for="name" class="block text-sm font-medium mb-2">Name</label>
-          <input type="text" id="name" name="name" class="w-full p-2 border border-gray-300 rounded" required>
+    <!-- Skills -->
+    <section id="skills" class="py-16 sm:py-20 section-reveal">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between gap-3 mb-6">
+          <div class="flex items-center gap-3">
+            <div class="h-6 w-1 rounded-full bg-gradient-to-b from-fuchsia-500 to-sky-500"></div>
+            <div>
+              <p class="text-xs uppercase tracking-[0.18em] text-fuchsia-400">Skills</p>
+              <h2 class="text-xl sm:text-2xl font-semibold tracking-tight">Tech stack &amp; focus areas</h2>
+            </div>
+          </div>
         </div>
-        <div class="mb-4">
-          <label for="email" class="block text-sm font-medium mb-2">Email</label>
-          <input type="email" id="email" name="email" class="w-full p-2 border border-gray-300 rounded" required>
-        </div>
-        <div class="mb-4">
-          <label for="message" class="block text-sm font-medium mb-2">Message</label>
-          <textarea id="message" name="message" class="w-full p-2 border border-gray-300 rounded" rows="4" required></textarea>
-        </div>
-        <div class="text-center">
-          <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded">Send Message</button>
-        </div>
-      </form>
-    </div>
-  </section>
 
-  <!-- Footer -->
-  <footer class="bg-blue-600 p-4 text-white text-center">
-    <p>&copy; 2024 Mohamed Yonis Yusuf. All Rights Reserved.</p>
+        <div class="grid gap-6 lg:grid-cols-3">
+          <div class="card-surface card-surface-light rounded-2xl p-5">
+            <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
+              Front‑end
+            </h3>
+            <p class="text-xs text-slate-400 mb-3">
+              Building responsive, accessible interfaces with a focus on usability and performance.
+            </p>
+            <div class="flex flex-wrap gap-2 text-[11px]">
+              <span class="tag-pill px-2 py-1">HTML5</span>
+              <span class="tag-pill px-2 py-1">CSS3</span>
+              <span class="tag-pill px-2 py-1">Tailwind CSS</span>
+              <span class="tag-pill px-2 py-1">JavaScript (ES6+)</span>
+              <span class="tag-pill px-2 py-1">React</span>
+            </div>
+          </div>
+
+          <div class="card-surface card-surface-light rounded-2xl p-5">
+            <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+              Back‑end &amp; Databases
+            </h3>
+            <p class="text-xs text-slate-400 mb-3">
+              Designing robust APIs and data models to support real products.
+            </p>
+            <div class="flex flex-wrap gap-2 text-[11px]">
+              <span class="tag-pill px-2 py-1">Node.js</span>
+              <span class="tag-pill px-2 py-1">Express</span>
+              <span class="tag-pill px-2 py-1">MongoDB</span>
+              <span class="tag-pill px-2 py-1">REST APIs</span>
+            </div>
+          </div>
+
+          <div class="card-surface card-surface-light rounded-2xl p-5">
+            <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-indigo-400"></span>
+              Tools &amp; Practices
+            </h3>
+            <p class="text-xs text-slate-400 mb-3">
+              Modern tooling, collaboration, and best practices for production‑ready software.
+            </p>
+            <div class="flex flex-wrap gap-2 text-[11px]">
+              <span class="tag-pill px-2 py-1">Git &amp; GitHub</span>
+              <span class="tag-pill px-2 py-1">Responsive Design</span>
+              <span class="tag-pill px-2 py-1">Performance</span>
+              <span class="tag-pill px-2 py-1">Accessibility</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GitHub section -->
+    <section id="github" class="py-16 sm:py-20 section-reveal">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between gap-3 mb-6">
+          <div class="flex items-center gap-3">
+            <div class="h-6 w-1 rounded-full bg-gradient-to-b from-sky-500 to-fuchsia-500"></div>
+            <div>
+              <p class="text-xs uppercase tracking-[0.18em] text-sky-400">GitHub</p>
+              <h2 class="text-xl sm:text-2xl font-semibold tracking-tight">Open‑source &amp; code activity</h2>
+            </div>
+          </div>
+          <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+            class="hidden sm:inline-flex items-center gap-2 text-xs btn-ghost rounded-full px-3 py-1">
+            <span>Visit my GitHub profile</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
+              aria-hidden="true">
+              <path fill-rule="evenodd"
+                d="M5 4a1 1 0 011-1h9a1 1 0 011 1v9a1 1 0 11-2 0V6.414l-9.293 9.293a1 1 0 01-1.414-1.414L12.586 5H6a1 1 0 01-1-1z"
+                clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-start">
+          <div class="card-surface card-surface-light rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+            <div class="flex-shrink-0">
+              <div class="relative">
+                <div
+                  class="absolute -inset-1 rounded-full bg-gradient-to-tr from-sky-500 via-indigo-500 to-fuchsia-500 blur-md opacity-70">
+                </div>
+                <img id="github-avatar" src="" alt="GitHub avatar of Mohamed Yonis" loading="lazy"
+                  class="relative h-20 w-20 rounded-full object-cover border border-slate-700/70 bg-slate-900" />
+              </div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div>
+                <p id="github-name" class="font-semibold">mohamed-yonis</p>
+                <p id="github-bio" class="text-xs text-slate-400">Loading GitHub profile…</p>
+              </div>
+              <div class="flex flex-wrap gap-3 text-[11px] text-slate-300">
+                <span id="github-repos" class="inline-flex items-center gap-1">
+                  <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
+                  <span>Repos: —</span>
+                </span>
+                <span id="github-followers" class="inline-flex items-center gap-1">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                  <span>Followers: —</span>
+                </span>
+                <span class="inline-flex items-center gap-1">
+                  <span class="h-1.5 w-1.5 rounded-full bg-fuchsia-400"></span>
+                  <span>Open to collaboration</span>
+                </span>
+              </div>
+              <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 text-xs mt-2 text-sky-400 hover:text-sky-300">
+                <span>Visit my GitHub profile</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
+                  aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M5 4a1 1 0 011-1h9a1 1 0 011 1v9a1 1 0 11-2 0V6.414l-9.293 9.293a1 1 0 01-1.414-1.414L12.586 5H6a1 1 0 01-1-1z"
+                    clip-rule="evenodd" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <!-- GitHub stats cards (3rd-party images) -->
+           
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="py-16 sm:py-20 section-reveal">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between gap-3 mb-6">
+          <div class="flex items-center gap-3">
+            <div class="h-6 w-1 rounded-full bg-gradient-to-b from-indigo-500 to-sky-500"></div>
+            <div>
+              <p class="text-xs uppercase tracking-[0.18em] text-indigo-400">Projects</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex flex-wrap gap-2 text-[11px] mb-6" aria-label="Filter projects by type">
+          <button class="project-filter tag-pill px-3 py-1 font-medium bg-sky-500/20 text-sky-300 border-sky-500/60"
+            data-filter="all">
+            All
+          </button>
+          <button class="project-filter tag-pill px-3 py-1 font-medium" data-filter="frontend">Frontend</button>
+          <button class="project-filter tag-pill px-3 py-1 font-medium" data-filter="backend">Backend</button>
+          <button class="project-filter tag-pill px-3 py-1 font-medium" data-filter="fullstack">Fullstack</button>
+        </div>
+
+        <!-- Featured static projects: curated six main projects -->
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-10">
+          <!-- Business Registration (Fullstack) -->
+          <article
+            class="group card-surface card-surface-light rounded-2xl overflow-hidden border border-slate-800/80 project-card transition transform hover:-translate-y-1.5 hover:shadow-2xl"
+            data-category="fullstack">
+            <div class="relative overflow-hidden h-32">
+              <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/25 via-sky-500/20 to-indigo-500/25"></div>
+              <div
+                class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent">
+              </div>
+              <div class="relative h-full flex items-end px-4 pb-3">
+                <div
+                  class="inline-flex items-center gap-2 rounded-full bg-slate-950/80 border border-slate-700/80 px-2.5 py-1 text-[10px] text-emerald-200">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                  <span>Fullstack · Business workflow</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 flex flex-col gap-3">
+              <div>
+                <h3 class="text-sm font-semibold">Business Registration Platform</h3>
+                <p class="text-[11px] text-slate-400 mt-1">
+                  End‑to‑end platform for registering and managing businesses, handling submissions, approvals,
+                  and secure data storage with a clean dashboard UI.
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-1.5 text-[10px]">
+                <span class="tag-pill px-2 py-1">React</span>
+                <span class="tag-pill px-2 py-1">Node.js</span>
+                <span class="tag-pill px-2 py-1">Express</span>
+                <span class="tag-pill px-2 py-1">MongoDB</span>
+              </div>
+              <div class="flex flex-wrap gap-2 text-[11px] mt-1">
+                <!-- TODO: replace with the specific Vercel deployment URL for this project -->
+                <a href="https://vercel.com/mohamed-yonis-projects-ed72e778" target="_blank" rel="noopener noreferrer"
+                  class="btn-primary flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>Live Demo</span>
+                </a>
+                <!-- TODO: replace with the exact GitHub repo for this project -->
+                <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+                  class="btn-ghost flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>View on GitHub</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- URL Shortener (Fullstack) -->
+          <article
+            class="group card-surface card-surface-light rounded-2xl overflow-hidden border border-slate-800/80 project-card transition transform hover:-translate-y-1.5 hover:shadow-2xl"
+            data-category="fullstack">
+            <div class="relative overflow-hidden h-32">
+              <div class="absolute inset-0 bg-gradient-to-r from-sky-500/25 via-indigo-500/20 to-fuchsia-500/25"></div>
+              <div
+                class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent">
+              </div>
+              <div class="relative h-full flex items-end px-4 pb-3">
+                <div
+                  class="inline-flex items-center gap-2 rounded-full bg-slate-950/80 border border-slate-700/80 px-2.5 py-1 text-[10px] text-sky-200">
+                  <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
+                  <span>Fullstack · URL shortener</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 flex flex-col gap-3">
+              <div>
+                <h3 class="text-sm font-semibold">URL Shortener Service</h3>
+                <p class="text-[11px] text-slate-400 mt-1">
+                  A fullstack URL shortener with custom slugs, click tracking, and analytics‑ready data model,
+                  built for fast redirects and easy sharing.
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-1.5 text-[10px]">
+                <span class="tag-pill px-2 py-1">React</span>
+                <span class="tag-pill px-2 py-1">Node.js</span>
+                <span class="tag-pill px-2 py-1">MongoDB</span>
+                <span class="tag-pill px-2 py-1">REST API</span>
+              </div>
+              <div class="flex flex-wrap gap-2 text-[11px] mt-1">
+                <!-- TODO: replace with the specific Vercel deployment URL for this project -->
+                <a href="https://vercel.com/mohamed-yonis-projects-ed72e778" target="_blank" rel="noopener noreferrer"
+                  class="btn-primary flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>Live Demo</span>
+                </a>
+                <!-- TODO: replace with the exact GitHub repo for this project -->
+                <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+                  class="btn-ghost flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>View on GitHub</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Sakan Somalia (Fullstack) -->
+          <article
+            class="group card-surface card-surface-light rounded-2xl overflow-hidden border border-slate-800/80 project-card transition transform hover:-translate-y-1.5 hover:shadow-2xl"
+            data-category="fullstack">
+            <div class="relative overflow-hidden h-32">
+              <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/25 via-emerald-500/20 to-sky-500/25"></div>
+              <div
+                class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent">
+              </div>
+              <div class="relative h-full flex items-end px-4 pb-3">
+                <div
+                  class="inline-flex items-center gap-2 rounded-full bg-slate-950/80 border border-slate-700/80 px-2.5 py-1 text-[10px] text-indigo-200">
+                  <span class="h-1.5 w-1.5 rounded-full bg-indigo-400"></span>
+                  <span>Fullstack · Construction</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 flex flex-col gap-3">
+              <div>
+                <h3 class="text-sm font-semibold">Sakan Somalia</h3>
+                <p class="text-[11px] text-slate-400 mt-1">
+                  Property listing platform tailored for Somalia, enabling users to browse, filter, and manage
+                  construction projects with a modern, mobile‑first UI.
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-1.5 text-[10px]">
+                <span class="tag-pill px-2 py-1">React</span>
+                <span class="tag-pill px-2 py-1">Node.js</span>
+                <span class="tag-pill px-2 py-1">MongoDB</span>
+                <span class="tag-pill px-2 py-1">Tailwind CSS</span>
+              </div>
+              <div class="flex flex-wrap gap-2 text-[11px] mt-1">
+                <!-- TODO: replace with the specific Vercel deployment URL for this project -->
+                <a href="https://vercel.com/mohamed-yonis-projects-ed72e778" target="_blank" rel="noopener noreferrer"
+                  class="btn-primary flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>Live Demo</span>
+                </a>
+                <!-- TODO: replace with the exact GitHub repo for this project -->
+                <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+                  class="btn-ghost flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>View on GitHub</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Hormuud Website Clone (Frontend demo) -->
+          <article
+            class="group card-surface card-surface-light rounded-2xl overflow-hidden border border-slate-800/80 project-card transition transform hover:-translate-y-1.5 hover:shadow-2xl"
+            data-category="frontend">
+            <div class="relative overflow-hidden h-32">
+              <div class="absolute inset-0 bg-gradient-to-r from-amber-400/25 via-emerald-500/25 to-sky-500/25"></div>
+              <div
+                class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent">
+              </div>
+              <div class="relative h-full flex items-end px-4 pb-3">
+                <div
+                  class="inline-flex items-center gap-2 rounded-full bg-slate-950/80 border border-slate-700/80 px-2.5 py-1 text-[10px] text-amber-100">
+                  <span class="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
+                  <span>Frontend · Landing clone</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 flex flex-col gap-3">
+              <div>
+                <h3 class="text-sm font-semibold">Hormuud Website Clone</h3>
+                <p class="text-[11px] text-slate-400 mt-1">
+                  A pixel‑close clone of the Hormuud Telecom website showcasing attention to layout, typography,
+                  responsive behavior, and interactive sections.
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-1.5 text-[10px]">
+                <span class="tag-pill px-2 py-1">HTML</span>
+                <span class="tag-pill px-2 py-1">CSS</span>
+                <span class="tag-pill px-2 py-1">JavaScript</span>
+                <span class="tag-pill px-2 py-1">Responsive UI</span>
+              </div>
+              <div class="flex flex-wrap gap-2 text-[11px] mt-1">
+                <!-- TODO: replace with the specific Vercel deployment URL for this project -->
+                <a href="https://vercel.com/mohamed-yonis-projects-ed72e778" target="_blank" rel="noopener noreferrer"
+                  class="btn-primary flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>Live Demo</span>
+                </a>
+                <!-- TODO: replace with the exact GitHub repo for this project -->
+                <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+                  class="btn-ghost flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>View on GitHub</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Facebook Clone -->
+          <article
+            class="group card-surface card-surface-light rounded-2xl overflow-hidden border border-slate-800/80 project-card transition transform hover:-translate-y-1.5 hover:shadow-2xl"
+            data-category="fullstack">
+            <div class="relative overflow-hidden h-32">
+              <div class="absolute inset-0 bg-gradient-to-r from-sky-500/40 via-sky-600/30 to-slate-900/40"></div>
+              <div
+                class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent">
+              </div>
+              <div class="relative h-full flex items-end px-4 pb-3">
+                <div
+                  class="inline-flex items-center gap-2 rounded-full bg-slate-950/80 border border-slate-700/80 px-2.5 py-1 text-[10px] text-sky-100">
+                  <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
+                  <span>Fullstack · Social platform</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 flex flex-col gap-3">
+              <div>
+                <h3 class="text-sm font-semibold">Facebook Clone</h3>
+                <p class="text-[11px] text-slate-400 mt-1">
+                  Social feed clone with posts, likes, and profile‑style UI, built to practice complex layouts,
+                  component architecture, and real‑time style interactions.
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-1.5 text-[10px]">
+                <span class="tag-pill px-2 py-1">React</span>
+                <span class="tag-pill px-2 py-1">Tailwind CSS</span>
+                <span class="tag-pill px-2 py-1">Node.js</span>
+                <span class="tag-pill px-2 py-1">MongoDB</span>
+              </div>
+              <div class="flex flex-wrap gap-2 text-[11px] mt-1">
+                <!-- TODO: replace with the specific Vercel deployment URL for this project -->
+                <a href="https://vercel.com/mohamed-yonis-projects-ed72e778" target="_blank" rel="noopener noreferrer"
+                  class="btn-primary flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>Live Demo</span>
+                </a>
+                <!-- TODO: replace with the exact GitHub repo for this project -->
+                <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+                  class="btn-ghost flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>View on GitHub</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- CodePen Clone -->
+          <article
+            class="group card-surface card-surface-light rounded-2xl overflow-hidden border border-slate-800/80 project-card transition transform hover:-translate-y-1.5 hover:shadow-2xl"
+            data-category="fullstack">
+            <div class="relative overflow-hidden h-32">
+              <div class="absolute inset-0 bg-gradient-to-r from-fuchsia-500/30 via-slate-900/40 to-emerald-500/25">
+              </div>
+              <div
+                class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent">
+              </div>
+              <div class="relative h-full flex items-end px-4 pb-3">
+                <div
+                  class="inline-flex items-center gap-2 rounded-full bg-slate-950/80 border border-slate-700/80 px-2.5 py-1 text-[10px] text-fuchsia-100">
+                  <span class="h-1.5 w-1.5 rounded-full bg-fuchsia-400"></span>
+                  <span>Fullstack · Playground clone</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 flex flex-col gap-3">
+              <div>
+                <h3 class="text-sm font-semibold">CodePen Clone</h3>
+                <p class="text-[11px] text-slate-400 mt-1">
+                  Browser‑based code editor clone for HTML, CSS, and JavaScript with live preview, built to
+                  practice real‑time updates and editor‑style UI.
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-1.5 text-[10px]">
+                <span class="tag-pill px-2 py-1">React</span>
+                <span class="tag-pill px-2 py-1">CodeMirror / Editor</span>
+                <span class="tag-pill px-2 py-1">Node.js</span>
+                <span class="tag-pill px-2 py-1">Web APIs</span>
+              </div>
+              <div class="flex flex-wrap gap-2 text-[11px] mt-1">
+                <!-- TODO: replace with the specific Vercel deployment URL for this project -->
+                <a href="https://vercel.com/mohamed-yonis-projects-ed72e778" target="_blank" rel="noopener noreferrer"
+                  class="btn-primary flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>Live Demo</span>
+                </a>
+                <!-- TODO: replace with the exact GitHub repo for this project -->
+                <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+                  class="btn-ghost flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>View on GitHub</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- GitHub Repositories (dynamic) -->
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <p class="text-xs text-slate-400 flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
+              <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+                class="text-sky-300 underline-offset-2 hover:underline">
+                GitHub
+              </a>
+            </p>
+            <p id="github-projects-status" class="text-[11px] text-slate-500 hidden"></p>
+          </div>
+
+          <!-- Skeletons -->
+          <div id="github-projects-skeleton" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="rounded-2xl border border-slate-800/80 overflow-hidden">
+              <div class="h-28 project-skeleton"></div>
+              <div class="p-4 space-y-3">
+                <div class="h-3 w-32 project-skeleton rounded-full"></div>
+                <div class="h-2.5 w-full project-skeleton rounded-full"></div>
+                <div class="h-2.5 w-5/6 project-skeleton rounded-full"></div>
+                <div class="flex gap-2">
+                  <div class="h-2.5 w-16 project-skeleton rounded-full"></div>
+                  <div class="h-2.5 w-16 project-skeleton rounded-full"></div>
+                </div>
+                <div class="flex gap-2 pt-1">
+                  <div class="h-7 flex-1 project-skeleton rounded-full"></div>
+                  <div class="h-7 flex-1 project-skeleton rounded-full"></div>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-slate-800/80 overflow-hidden hidden sm:block">
+              <div class="h-28 project-skeleton"></div>
+              <div class="p-4 space-y-3">
+                <div class="h-3 w-32 project-skeleton rounded-full"></div>
+                <div class="h-2.5 w-full project-skeleton rounded-full"></div>
+                <div class="h-2.5 w-5/6 project-skeleton rounded-full"></div>
+                <div class="flex gap-2">
+                  <div class="h-2.5 w-16 project-skeleton rounded-full"></div>
+                  <div class="h-2.5 w-16 project-skeleton rounded-full"></div>
+                </div>
+                <div class="flex gap-2 pt-1">
+                  <div class="h-7 flex-1 project-skeleton rounded-full"></div>
+                  <div class="h-7 flex-1 project-skeleton rounded-full"></div>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-slate-800/80 overflow-hidden hidden lg:block">
+              <div class="h-28 project-skeleton"></div>
+              <div class="p-4 space-y-3">
+                <div class="h-3 w-32 project-skeleton rounded-full"></div>
+                <div class="h-2.5 w-full project-skeleton rounded-full"></div>
+                <div class="h-2.5 w-5/6 project-skeleton rounded-full"></div>
+                <div class="flex gap-2">
+                  <div class="h-2.5 w-16 project-skeleton rounded-full"></div>
+                  <div class="h-2.5 w-16 project-skeleton rounded-full"></div>
+                </div>
+                <div class="flex gap-2 pt-1">
+                  <div class="h-7 flex-1 project-skeleton rounded-full"></div>
+                  <div class="h-7 flex-1 project-skeleton rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic projects container -->
+          <div id="github-projects-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-1"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-16 sm:py-20 section-reveal">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between gap-3 mb-6">
+          <div class="flex items-center gap-3">
+            <div class="h-6 w-1 rounded-full bg-gradient-to-b from-emerald-500 to-sky-500"></div>
+            <div>
+              <p class="text-xs uppercase tracking-[0.18em] text-emerald-400">Contact</p>
+              <h2 class="text-xl sm:text-2xl font-semibold tracking-tight">Let’s build something together</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-start">
+          <!-- Form -->
+          <div class="card-surface card-surface-light rounded-2xl p-6 sm:p-7">
+            <form id="contact-form" class="space-y-4" novalidate>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="name" class="block text-xs font-medium text-slate-300 mb-1.5">Name</label>
+                  <input type="text" id="name" name="name"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="Your name" required aria-required="true" />
+                </div>
+                <div>
+                  <label for="email" class="block text-xs font-medium text-slate-300 mb-1.5">Email</label>
+                  <input type="email" id="email" name="email"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="you@example.com" required aria-required="true" />
+                </div>
+              </div>
+
+              <div>
+                <label for="subject" class="block text-xs font-medium text-slate-300 mb-1.5">Subject</label>
+                <input type="text" id="subject" name="subject"
+                  class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  placeholder="How can I help?" required aria-required="true" />
+              </div>
+
+              <div>
+                <label for="message" class="block text-xs font-medium text-slate-300 mb-1.5">Message</label>
+                <textarea id="message" name="message" rows="4"
+                  class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  placeholder="Share a bit about your project, idea, or opportunity…" required
+                  aria-required="true"></textarea>
+              </div>
+
+              <p id="contact-status" class="text-[11px] text-slate-400 h-4"></p>
+
+              <div class="flex flex-wrap items-center gap-3 pt-1">
+                <button type="submit" id="contact-submit"
+                  class="btn-primary inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium disabled:opacity-60 disabled:cursor-not-allowed">
+                  <span>Send message</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"
+                    aria-hidden="true">
+                    <path
+                      d="M2.94 3.94a1.5 1.5 0 011.58-.33l12 4.5a1.5 1.5 0 010 2.78l-12 4.5A1.5 1.5 0 012 14.5v-3.086a1.5 1.5 0 01.44-1.06L6 7.793V7.5a.5.5 0 01.79-.407l2.347 1.565a.5.5 0 010 .832L6.79 11.056a.5.5 0 01-.79-.408v-.293L3.5 12.914V14.5l12-4.5-12-4.5v1.586L6 7.207V6.5a1.5 1.5 0 012.37-1.222l2.347 1.565a1.5 1.5 0 010 2.494L8.37 10.902A1.5 1.5 0 016 9.68V9.5L3.44 11.646A3 3 0 002 14.5v-9a1.5 1.5 0 01.94-1.56z" />
+                  </svg>
+                </button>
+
+                <!-- Fallback email link (update email address) -->
+                <a id="email-fallback" href="mailto:your-email@example.com"
+                  class="text-[11px] text-slate-400 hover:text-sky-300 underline-offset-2 hover:underline">
+                  Or email me directly
+                </a>
+              </div>
+
+              <!-- Note for you: configure EmailJS credentials in the script at the bottom of this file -->
+            </form>
+          </div>
+
+          <!-- Contact sidebar -->
+          <aside class="space-y-4 text-sm">
+            <div class="card-surface card-surface-light rounded-2xl p-5">
+              <h3 class="text-sm font-semibold mb-3">Quick links</h3>
+              <div class="space-y-2 text-xs text-slate-300">
+                <a href="https://github.com/mohamed-yonis" target="_blank" rel="noopener noreferrer"
+                  class="flex items-center gap-2 hover:text-sky-300">
+                  <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
+                  <span>GitHub</span>
+                </a>
+               
+                <a href="mailto:your-email@example.com" class="flex items-center gap-2 hover:text-sky-300">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                  <span>Email: zakimoha104@gmail.com</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="card-surface card-surface-light rounded-2xl p-5">
+              <h3 class="text-sm font-semibold mb-3">CV / Resume</h3>
+              <p class="text-xs text-slate-400 mb-3">
+                Download a copy of my CV for offline review or to share with your team.
+              </p>
+              <a href="MohamedYonisCv.pdf"
+                class="btn-ghost inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium" download>
+                <span>Download CV (PDF)</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
+                  aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M3 4.75A2.75 2.75 0 015.75 2h8.5A2.75 2.75 0 0117 4.75v10.5A2.75 2.75 0 0114.25 18h-8.5A2.75 2.75 0 013 15.25V4.75zm6.47 3.47a.75.75 0 011.06 0l2.25 2.25a.75.75 0 11-1.06 1.06L11 10.81V14a.75.75 0 01-1.5 0v-3.19l-.72.72a.75.75 0 01-1.06-1.06l2.25-2.25z"
+                    clip-rule="evenodd" />
+                </svg>
+              </a>
+             
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-800 bg-slate-950/80 mt-8">
+    <div
+      class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
+      <p>&copy; <span id="year"></span> Mohamed Yonis Yusuf. All rights reserved.</p>
+
+    </div>
   </footer>
 
   <script>
-    // Toggle mobile menu visibility
-    document.getElementById('menu-button').addEventListener('click', function() {
-      var menu = document.getElementById('mobile-menu');
-      menu.classList.toggle('hidden');
+    // --- Theme handling ---
+    (function () {
+      const body = document.body;
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+      const iconDesktop = document.getElementById('theme-icon');
+      const iconMobile = document.getElementById('theme-icon-mobile');
+
+      function applyTheme(theme) {
+        if (theme === 'light') {
+          body.classList.remove('theme-dark');
+          body.classList.add('theme-light');
+          if (iconDesktop) iconDesktop.textContent = '☀️';
+          if (iconMobile) iconMobile.textContent = '☀️';
+        } else {
+          body.classList.remove('theme-light');
+          body.classList.add('theme-dark');
+          if (iconDesktop) iconDesktop.textContent = '🌙';
+          if (iconMobile) iconMobile.textContent = '🌙';
+        }
+      }
+
+      function getInitialTheme() {
+        const stored = window.localStorage.getItem('theme');
+        if (stored === 'light' || stored === 'dark') return stored;
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      }
+
+      let currentTheme = getInitialTheme();
+      applyTheme(currentTheme);
+
+      function toggleTheme() {
+        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+        window.localStorage.setItem('theme', currentTheme);
+        applyTheme(currentTheme);
+      }
+
+      if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+      if (themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
+    })();
+
+    // --- Mobile menu ---
+    (function () {
+      const menuButton = document.getElementById('menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (!menuButton || !mobileMenu) return;
+      menuButton.addEventListener('click', () => {
+        const isHidden = mobileMenu.classList.contains('hidden');
+        mobileMenu.classList.toggle('hidden');
+        menuButton.setAttribute('aria-expanded', String(isHidden));
+      });
+    })();
+
+    // --- Scroll progress indicator ---
+    (function () {
+      const progress = document.getElementById('scroll-progress');
+      if (!progress) return;
+
+      function updateProgress() {
+        const scrollTop = window.scrollY || window.pageYOffset;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progress.style.width = percent + '%';
+      }
+
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      window.addEventListener('resize', updateProgress);
+      updateProgress();
+    })();
+
+    // --- Section reveal on scroll ---
+    (function () {
+      const sections = document.querySelectorAll('.section-reveal');
+      if ('IntersectionObserver' in window && sections.length) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        sections.forEach((section) => observer.observe(section));
+      } else {
+        sections.forEach((section) => section.classList.add('visible'));
+      }
+    })();
+
+    // --- GitHub profile integration ---
+    async function loadGitHubProfile() {
+      const avatar = document.getElementById('github-avatar');
+      const nameEl = document.getElementById('github-name');
+      const bioEl = document.getElementById('github-bio');
+      const reposEl = document.getElementById('github-repos');
+      const followersEl = document.getElementById('github-followers');
+
+      try {
+        const res = await fetch('https://api.github.com/users/mohamed-yonis');
+        if (!res.ok) throw new Error('GitHub API error');
+        const data = await res.json();
+
+        if (avatar && data.avatar_url) avatar.src = data.avatar_url;
+        if (nameEl && data.name) nameEl.textContent = data.name + ' · @' + data.login;
+        if (bioEl) bioEl.textContent = data.bio || 'Full‑stack developer sharing projects & experiments on GitHub.';
+        if (reposEl) reposEl.querySelector('span:nth-child(2)').textContent = 'Repos: ' + (data.public_repos ?? '—');
+        if (followersEl) followersEl.querySelector('span:nth-child(2)').textContent = 'Followers: ' + (data.followers ?? '—');
+      } catch (err) {
+        if (bioEl) bioEl.textContent = 'Unable to load GitHub profile at the moment.';
+      }
+    }
+
+    // --- GitHub projects integration ---
+    async function loadGitHubProjects() {
+      const skeleton = document.getElementById('github-projects-skeleton');
+      const grid = document.getElementById('github-projects-grid');
+      const status = document.getElementById('github-projects-status');
+
+      if (!grid) return;
+      if (status) status.classList.remove('hidden');
+
+      try {
+        if (status) status.textContent = 'Fetching projects from GitHub…';
+        const res = await fetch('https://api.github.com/users/mohamed-yonis/repos?per_page=100&sort=updated');
+        if (!res.ok) throw new Error('GitHub API error');
+        const repos = await res.json();
+
+        const usable = repos
+          .filter((r) => !r.fork)
+          .sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0) || new Date(b.pushed_at) - new Date(a.pushed_at))
+          .slice(0, 6);
+
+        grid.innerHTML = '';
+
+        usable.forEach((repo) => {
+          const lang = repo.language || 'Fullstack';
+          let category = 'fullstack';
+          const langLower = String(lang).toLowerCase();
+          if (['html', 'css', 'javascript', 'typescript'].includes(langLower)) category = 'frontend';
+          else if (['php', 'python', 'java', 'c#', 'node', 'node.js'].includes(langLower)) category = 'backend';
+
+          const desc = repo.description || 'A GitHub project by Mohamed demonstrating real‑world development work.';
+          const homepage = repo.homepage && repo.homepage.trim() ? repo.homepage.trim() : null;
+
+          const card = document.createElement('article');
+          card.className =
+            'group card-surface card-surface-light rounded-2xl overflow-hidden border border-slate-800/80 project-card transition transform hover:-translate-y-1.5 hover:shadow-2xl';
+          card.dataset.category = category;
+
+          card.innerHTML = `
+            <div class="relative h-24 overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-r from-sky-500/20 via-indigo-500/25 to-fuchsia-500/20"></div>
+              <div class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-transparent"></div>
+              <div class="relative h-full flex items-end px-4 pb-2">
+                <div class="inline-flex items-center gap-2 rounded-full bg-slate-950/80 border border-slate-700/80 px-2.5 py-1 text-[10px] text-slate-200">
+                  <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
+                  <span>${lang}</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 flex flex-col gap-3">
+              <div>
+                <h3 class="text-sm font-semibold mb-1">${repo.name}</h3>
+                <p class="text-[11px] text-slate-400 line-clamp-3">${desc}</p>
+              </div>
+              <div class="flex flex-wrap gap-1.5 text-[10px]">
+                <span class="tag-pill px-2 py-1">GitHub</span>
+                ${lang ? `<span class="tag-pill px-2 py-1">${lang}</span>` : ''}
+                <span class="tag-pill px-2 py-1">Stars: ${repo.stargazers_count || 0}</span>
+              </div>
+              <div class="flex flex-wrap gap-2 text-[11px] mt-1">
+                ${homepage
+              ? `<a href="${homepage}" target="_blank" rel="noopener noreferrer" class="btn-primary flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                        <span>Live Demo</span>
+                      </a>`
+              : `<button type="button" class="btn-primary flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5 opacity-60 cursor-not-allowed" aria-disabled="true">
+                        <span>Live Demo</span>
+                      </button>`
+            }
+                <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="btn-ghost flex-1 inline-flex items-center justify-center gap-1 rounded-full px-3 py-1.5">
+                  <span>View on GitHub</span>
+                </a>
+              </div>
+            </div>
+          `;
+
+          grid.appendChild(card);
+        });
+
+        if (usable.length === 0 && status) {
+          status.textContent = 'No public repositories found yet.';
+        } else if (status) {
+          status.textContent = `Showing ${usable.length} GitHub repositories.`;
+        }
+      } catch (err) {
+        if (status) status.textContent = 'Unable to load GitHub projects right now.';
+      } finally {
+        if (skeleton) skeleton.classList.add('hidden');
+      }
+    }
+
+    // --- Project filtering ---
+    function initProjectFilters() {
+      const filterButtons = document.querySelectorAll('.project-filter');
+      const projectCards = document.querySelectorAll('.project-card');
+      if (!filterButtons.length || !projectCards.length) return;
+
+      function setActive(filter) {
+        filterButtons.forEach((btn) => {
+          const isActive = btn.dataset.filter === filter;
+          if (isActive) {
+            btn.classList.add('bg-sky-500/20', 'text-sky-300', 'border-sky-500/60');
+          } else {
+            btn.classList.remove('bg-sky-500/20', 'text-sky-300', 'border-sky-500/60');
+          }
+        });
+      }
+
+      function applyFilter(filter) {
+        projectCards.forEach((card) => {
+          const category = card.dataset.category || 'fullstack';
+          if (filter === 'all' || category === filter) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      }
+
+      filterButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const filter = btn.dataset.filter || 'all';
+          setActive(filter);
+          applyFilter(filter);
+        });
+      });
+
+      setActive('all');
+      applyFilter('all');
+    }
+
+    // --- Contact form with EmailJS (configure your keys) ---
+    function initContactForm() {
+      const form = document.getElementById('contact-form');
+      const status = document.getElementById('contact-status');
+      const submitBtn = document.getElementById('contact-submit');
+
+      if (!form) return;
+
+      // TODO: Replace with your actual EmailJS values
+      const EMAILJS_PUBLIC_KEY = ''; // e.g. 'AbCdEf123456'
+      const EMAILJS_SERVICE_ID = ''; // e.g. 'service_xxx'
+      const EMAILJS_TEMPLATE_ID = ''; // e.g. 'template_xxx'
+
+      if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY) {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!submitBtn) return;
+
+        const formData = new FormData(form);
+        const payload = {
+          name: formData.get('name'),
+          email: formData.get('email'),
+          subject: formData.get('subject'),
+          message: formData.get('message'),
+        };
+
+        if (!payload.name || !payload.email || !payload.subject || !payload.message) {
+          if (status) {
+            status.textContent = 'Please fill in all fields.';
+            status.style.color = 'var(--danger)';
+          }
+          return;
+        }
+
+        submitBtn.disabled = true;
+        if (status) {
+          status.textContent = EMAILJS_PUBLIC_KEY ? 'Sending message…' : 'Opening your email client…';
+          status.style.color = 'var(--muted)';
+        }
+
+        try {
+          if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID) {
+            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, payload);
+            if (status) {
+              status.textContent = 'Message sent successfully. Thank you!';
+              status.style.color = 'var(--accent)';
+            }
+            form.reset();
+          } else {
+            // Fallback: open mail client pre‑filled
+            const mailto = `mailto:your-email@example.com?subject=${encodeURIComponent(
+              String(payload.subject)
+            )}&body=${encodeURIComponent(`From: ${payload.name} <${payload.email}>\n\n${payload.message}`)}`;
+            window.location.href = mailto;
+            if (status) {
+              status.textContent = 'Opening your email client…';
+              status.style.color = 'var(--accent)';
+            }
+          }
+        } catch (err) {
+          if (status) {
+            status.textContent = 'Something went wrong. Please try again or email me directly.';
+            status.style.color = 'var(--danger)';
+          }
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+    }
+
+    // --- Misc ---
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Init on load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadGitHubProfile();
+      loadGitHubProjects().then(initProjectFilters);
+      initContactForm();
     });
   </script>
 
 </body>
+
 </html>
